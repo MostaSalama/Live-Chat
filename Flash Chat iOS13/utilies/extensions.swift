@@ -1,5 +1,6 @@
 
 import UIKit
+import Firebase
 
 extension UIViewController {
     func navigate (_ id:String){
@@ -16,8 +17,24 @@ extension ChatViewController:UITableViewDataSource{
     }
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
+        let message = Messeges[indexPath.row]
         let cell = tableView.dequeueReusableCell(withIdentifier: K.cellIdentifier, for: indexPath) as! MessageCell
-        cell.messageLabel.text = Messeges[indexPath.row].body
+        cell.messageLabel.text = message.body
+        
+        if message.sender == Auth.auth().currentUser?.email{
+            cell.userImage.isHidden = false
+            cell.userImage2.isHidden = true
+            cell.messageBubble.backgroundColor = UIColor(named: K.BrandColors.lightPurple)
+            cell.messageLabel.textColor = UIColor(named: K.BrandColors.purple)
+        }else{
+            cell.userImage.isHidden = true
+            cell.userImage2.isHidden = false
+            cell.messageBubble.backgroundColor = UIColor(named: K.BrandColors.purple)
+            cell.messageLabel.textColor = UIColor(named: K.BrandColors.lightPurple)
+            
+        }
+        
+        
         return cell
     }
 }
